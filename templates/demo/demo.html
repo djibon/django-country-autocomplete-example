@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block extra_js %}
+<script type="text/javascript">
+
+  $().ready(function(){
+    var code="NOT TESTED";
+  $('#id_country').autocomplete('{% url countries_countries_lookup %}',{
+       dataType:"json",
+       minChars:0,
+       max: 12,
+       autoFill: false,
+       mustMatch:true,
+       matchContains: false,
+       scrollHeight: 240,
+       parse: function(data){
+          return $.map(data, function(row){
+              return {
+                  data: row,
+                  value: row.name,
+                  result: row.name +"( "+ row.code + " )"
+              }
+          });
+      },
+      formatItem: function(item){
+            return item.name;
+      },
+      result: function(e, data, value){
+            console.log(data);
+            console.log(value);
+      }
+  }).result(function(e, data, value){  
+     code = data.code;
+  });
+  
+
+  $('#id_city').autocomplete('{% url countries_cities_lookup %}',{
+       dataType:"json",
+       minChars:0,
+       max: 12,
+       autoFill: false,
+       mustMatch:true,
+       matchContains: false,
+       scrollHeight: 240,
+       extraParams: { country_id:function() { return code;  }},
+       parse: function(data){
+          return $.map(data, function(row){
+              return {
+                  data: row,
+                  value: row.name,
+                  result: row.name +"( "+ row.code + " )"
+              }
+          });
+      },
+      formatItem: function(item){
+            return item.name;
+      },
+  });
+
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<h1>Hello World </h1>
+<form>
+  <label>Country </label> <input type="text" id="id_country"/><br/>
+  <label>City    </label> <input type="text" id="id_city"/>
+</form>
+{% endblock %}

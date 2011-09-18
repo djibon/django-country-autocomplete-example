@@ -1,0 +1,13 @@
+from django.http import HttpResponse
+from django.utils import simplejson
+
+
+def countries_lookup(request):
+    json = simplejson.dumps({})
+    return HttpResponse(json,
+                        mimetype="application/json")
+
+def city_lookup(request):
+    json = simplejson.dumps({})
+    return HttpResponse(json,
+                        mimetype="application/json")
